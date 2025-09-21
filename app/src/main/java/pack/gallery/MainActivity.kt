@@ -19,6 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pack.gallery.ui.theme.GalleryTheme
 
 class MainActivity : AppCompatActivity() {
@@ -33,12 +36,36 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        img = findViewById(R.id.imageView)
+        val data = listOf(
+            ImageModel(R.drawable.image, "описание 1"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2")
+        )
 
-        val descripts = listOf("Picture 1")
+        val recycler = findViewById<RecyclerView>(R.id.recyclerView)
+        val layoutManager = StaggeredGridLayoutManager(
+            4,
+            StaggeredGridLayoutManager.VERTICAL
+        )
+        recycler.layoutManager = layoutManager
 
-        //btn.setOnClickListener { Toast.makeText(this, "Привет, мир!", Toast.LENGTH_SHORT).show() }
-        img.setOnClickListener { Toast.makeText(this, descripts[0], Toast.LENGTH_SHORT).show() }
+        recycler.adapter = ImageAdapter(data)
     }
 
     @Override
