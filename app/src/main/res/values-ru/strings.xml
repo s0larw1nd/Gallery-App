@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Галлерея</string>
+    <string name="settings">Настройки</string>
+    <string name="info">О приложении</string>
+</resources>
