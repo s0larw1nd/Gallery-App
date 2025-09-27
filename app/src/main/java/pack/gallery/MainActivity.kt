@@ -1,5 +1,6 @@
 package pack.gallery
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,15 +20,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import pack.gallery.ui.theme.GalleryTheme
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var btn: Button
-    private lateinit var img: ImageView
-
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +37,15 @@ class MainActivity : AppCompatActivity() {
 
         val data = listOf(
             ImageModel(R.drawable.image, "описание 1"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
+            ImageModel(R.drawable.image, "описание 2"),
             ImageModel(R.drawable.image, "описание 2"),
             ImageModel(R.drawable.image, "описание 2"),
             ImageModel(R.drawable.image, "описание 2"),
@@ -79,30 +87,18 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                // Обработка нажатия "Настройки"
+                Intent(this, SettingsActivity::class.java).also {
+                    ContextCompat.startActivity(this, it, null)
+                }
                 true
             }
             R.id.action_about -> {
-                // Обработка нажатия "О приложении"
+                Intent(this, InfoActivity::class.java).also {
+                    ContextCompat.startActivity(this, it, null)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GalleryTheme {
-        Greeting("Android")
     }
 }
