@@ -4,4 +4,6 @@
     <string name="info">App Info</string>
     <string name="share">Share</string>
     <string name="version">Version:</string>
+    <string name="home">Home</string>
+    <string name="album">Album</string>
 </resources>

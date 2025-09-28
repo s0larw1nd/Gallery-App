@@ -71,18 +71,21 @@ class GalleryActivity : AppCompatActivity() {
     @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_home -> {
+                startActivity(Intent(this, FeedActivity::class.java))
+                return true
+            }
+
             R.id.action_settings -> {
-                Intent(this, SettingsActivity::class.java).also {
-                    ContextCompat.startActivity(this, it, null)
-                }
-                true
+                startActivity(Intent(this, SettingsActivity::class.java))
+                return true
             }
+
             R.id.action_about -> {
-                Intent(this, InfoActivity::class.java).also {
-                    ContextCompat.startActivity(this, it, null)
-                }
-                true
+                startActivity(Intent(this, InfoActivity::class.java))
+                return true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

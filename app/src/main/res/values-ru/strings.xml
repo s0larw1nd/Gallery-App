@@ -5,4 +5,6 @@
     <string name="info">О приложении</string>
     <string name="share">Поделиться</string>
     <string name="version">Версия:</string>
+    <string name="home">Домашний экран</string>
+    <string name="album">Альбом</string>
 </resources>
