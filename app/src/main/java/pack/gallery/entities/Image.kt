@@ -1,4 +1,4 @@
-package pack.gallery
+package pack.gallery.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

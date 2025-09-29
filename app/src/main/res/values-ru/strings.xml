@@ -7,4 +7,10 @@
     <string name="version">Версия:</string>
     <string name="home">Домашний экран</string>
     <string name="album">Альбом</string>
+    <string name="register">Создание аккаунта</string>
+    <string name="login">Вход в аккаунт</string>
+    <string name="default_name">Имя</string>
+    <string name="default_password">Пароль</string>
+    <string name="logout">Выйти из аккаунта</string>
+    <string name="add">Добавить</string>
 </resources>

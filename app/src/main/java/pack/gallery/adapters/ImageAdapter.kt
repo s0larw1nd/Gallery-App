@@ -1,15 +1,19 @@
-package pack.gallery
+package pack.gallery.adapters
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import pack.gallery.models.ImageModel
+import pack.gallery.R
+import pack.gallery.activities.ImageActivity
+import pack.gallery.entities.Image
 
-class ImageAdapter(private val items: List<ImageModel>): RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter(private var items: List<Image>): RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.itemImage)
         var desc: String = "null";
@@ -26,18 +30,26 @@ class ImageAdapter(private val items: List<ImageModel>): RecyclerView.Adapter<Im
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val image = items[position]
-        holder.imageView.setImageResource(image.imageRes)
+        val bitmap = BitmapFactory.decodeFile(image.filePath)
+        holder.imageView.setImageBitmap(bitmap)
         holder.desc = image.description
 
         holder.imageView.setOnClickListener {
             val context = holder.itemView.context
             val imgShowIntent = Intent(context, ImageActivity::class.java).also {
-                it.putExtra("image", image.imageRes)
-                it.putExtra("description", image.description)
-                startActivity(context, it, null)
+                it.putExtra("id", image.id)
+                ContextCompat.startActivity(context, it, null)
             }
         }
     }
 
     override fun getItemCount() = items.size
+
+    fun submitImages(images: List<Image>) {
+        items = images
+    }
+
+    private fun entityToModel(images: List<Image>) : List<ImageModel> {
+        return images.map { ImageModel(filePath = it.filePath, description = it.description, owner = it.owner) }
+    }
 }

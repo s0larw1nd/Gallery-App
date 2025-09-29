@@ -1,8 +1,8 @@
-package pack.gallery
+package pack.gallery.providers
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
+import pack.gallery.databases.ImageDatabase
 
 object ImageDatabaseProvider {
     @Volatile
@@ -13,7 +13,7 @@ object ImageDatabaseProvider {
             Room.databaseBuilder(
                 context.applicationContext,
                 ImageDatabase::class.java,
-                "app_database"
+                "image_database"
             ).build().also { INSTANCE = it }
         }
     }

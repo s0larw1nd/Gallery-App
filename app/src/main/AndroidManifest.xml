@@ -13,10 +13,41 @@
         android:theme="@style/Theme.Gallery" >
 
         <activity
-            android:name=".FeedActivity"
+            android:name=".activities.FeedActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Gallery" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.GalleryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Gallery" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.ImageActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.InfoActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.SettingsActivity">
+        </activity>
+
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,27 +55,8 @@
             </intent-filter>
         </activity>
 
-
         <activity
-            android:name=".GalleryActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Gallery" >
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ImageActivity">
-        </activity>
-
-        <activity
-            android:name=".InfoActivity">
-        </activity>
-
-        <activity
-            android:name=".SettingsActivity">
+            android:name=".activities.RegisterActivity">
         </activity>
 
         <provider
