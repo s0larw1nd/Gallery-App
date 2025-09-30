@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -30,13 +31,23 @@ class RegisterActivity : AppCompatActivity() {
             val password = tvPassword.getText().toString().hashCode().toString()
 
             lifecycleScope.launch {
-                userDao.insertUser(User(username = username, password = password))
-                val id = userDao.getUserByUsername(username)?.id
-                val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putString("user_id", id.toString())
-                editor.apply()
-                startActivity(Intent(this@RegisterActivity, FeedActivity::class.java))
+                val result = userDao.insertUser(User(username = username, password = password))
+                if (result == -1L) {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Имя пользователя занято",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else {
+                    val id = userDao.getUserByUsername(username)?.id
+                    val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putString("user_id", id.toString())
+                    editor.apply()
+                    startActivity(Intent(this@RegisterActivity, FeedActivity::class.java))
+                    finish()
+                }
             }
         }
 

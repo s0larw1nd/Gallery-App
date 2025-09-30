@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/search_svg"
+        android:title="@string/search"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
         android:id="@+id/action_add"
         android:icon="@drawable/plus_svg"
         android:title="@string/add"
@@ -24,7 +31,7 @@
         android:id="@+id/action_settings"
         android:icon="@drawable/settings_svg"
         android:title="@string/settings"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about"

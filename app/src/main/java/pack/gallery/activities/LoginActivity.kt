@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import pack.gallery.R
-import pack.gallery.entities.User
 import pack.gallery.providers.UserDatabaseProvider
 
 class LoginActivity : AppCompatActivity() {
@@ -46,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     startActivity(Intent(this@LoginActivity, FeedActivity::class.java))
+                    finish()
                 } else {
                     Toast.makeText(
                         this@LoginActivity,

@@ -2,7 +2,6 @@ package pack.gallery.providers
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.migration.Migration
 import pack.gallery.databases.UserDatabase
 
 object UserDatabaseProvider {

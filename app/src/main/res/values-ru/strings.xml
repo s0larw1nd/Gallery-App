@@ -13,4 +13,8 @@
     <string name="default_password">Пароль</string>
     <string name="logout">Выйти из аккаунта</string>
     <string name="add">Добавить</string>
+    <string name="save">Сохранить</string>
+    <string name="search">Поиск</string>
+    <string name="delete">Удалить</string>
+    <string name="loginLabel">"Имя пользователя: "</string>
 </resources>

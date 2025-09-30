@@ -24,6 +24,7 @@ class InfoActivity : AppCompatActivity() {
         return true
     }
 
+    @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_home -> {

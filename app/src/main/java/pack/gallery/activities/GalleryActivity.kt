@@ -7,53 +7,39 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kotlinx.coroutines.launch
 import pack.gallery.adapters.ImageAdapter
-import pack.gallery.models.ImageModel
-import pack.gallery.activities.InfoActivity
 import pack.gallery.R
-import pack.gallery.activities.SettingsActivity
-import pack.gallery.entities.Image
+import pack.gallery.factories.ImageViewModelFactory
 import pack.gallery.providers.ImageDatabaseProvider
-import java.io.File
-import java.io.FileOutputStream
+import pack.gallery.repositories.ImageRepository
+import pack.gallery.repositories.PreferencesRepository
+import pack.gallery.viewmodels.ImageViewModel
+import kotlin.getValue
 
 class GalleryActivity : AppCompatActivity() {
-    private fun saveImageToInternalStorage(uri: Uri): Unit {
-        val inputStream = contentResolver.openInputStream(uri)
-        val fileName = "photo_${System.currentTimeMillis()}.jpg"
-        val file = File(filesDir, fileName)
-        val outputStream = FileOutputStream(file)
-
-        inputStream?.copyTo(outputStream)
-        inputStream?.close()
-        outputStream.close()
-
-        val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-        val id = sharedPreferences.getString("user_id", "NULL")
-
+    private val imageRepository: ImageRepository by lazy {
         val db = ImageDatabaseProvider.getDatabase(this)
-        val imageDao = db.imageDao()
-
-        lifecycleScope.launch {
-            imageDao.insert(
-                Image(
-                    filePath = file.absolutePath,
-                    description = "",
-                    owner = id?.toIntOrNull() ?: 0
-                )
-            )
-        }
+        ImageRepository(db.imageDao())
     }
-
-    val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val prefsRepository: PreferencesRepository by lazy {
+        PreferencesRepository(applicationContext)
+    }
+    private val viewModel: ImageViewModel by viewModels {
+        ImageViewModelFactory(imageRepository,prefsRepository)
+    }
+    private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
-            saveImageToInternalStorage(it)
+            viewModel.saveImageToInternalStorage(it, contentResolver, filesDir)
         }
     }
 
@@ -71,13 +57,15 @@ class GalleryActivity : AppCompatActivity() {
             StaggeredGridLayoutManager.VERTICAL
         )
         recycler.layoutManager = layoutManager
-
-        val db = ImageDatabaseProvider.getDatabase(this)
-        val imageDao = db.imageDao()
+        val adapter = ImageAdapter()
+        recycler.adapter = adapter
 
         lifecycleScope.launch {
-            val images = imageDao.getAll()
-            recycler.adapter = ImageAdapter(images)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.imagesOwner.collect { images ->
+                    adapter.submitImages(images)
+                }
+            }
         }
     }
 
@@ -85,6 +73,22 @@ class GalleryActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.setSearchQuery(query ?: "")
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.setSearchQuery(newText ?: "")
+                return true
+            }
+        })
+
         return true
     }
 

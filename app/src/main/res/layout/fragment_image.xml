@@ -21,7 +21,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:scaleType="centerCrop" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

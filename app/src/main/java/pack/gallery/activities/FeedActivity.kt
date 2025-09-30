@@ -2,63 +2,45 @@ package pack.gallery.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.net.Uri
 import android.view.MenuItem
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.coroutines.launch
-import pack.gallery.activities.GalleryActivity
 import pack.gallery.providers.ImageDatabaseProvider
-import pack.gallery.activities.InfoActivity
 import pack.gallery.R
-import pack.gallery.activities.SettingsActivity
 import pack.gallery.adapters.ViewPagerAdapter
-import pack.gallery.entities.Image
-import pack.gallery.providers.UserDatabaseProvider
-import java.io.File
-import java.io.FileOutputStream
+import pack.gallery.factories.ImageViewModelFactory
+import pack.gallery.repositories.ImageRepository
+import pack.gallery.repositories.PreferencesRepository
+import pack.gallery.viewmodels.ImageViewModel
 
 class FeedActivity : AppCompatActivity() {
-    private fun saveImageToInternalStorage(uri: Uri): Unit {
-        val inputStream = contentResolver.openInputStream(uri)
-        val fileName = "photo_${System.currentTimeMillis()}.jpg"
-        val file = File(filesDir, fileName)
-        val outputStream = FileOutputStream(file)
-
-        inputStream?.copyTo(outputStream)
-        inputStream?.close()
-        outputStream.close()
-
-        val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-        val id = sharedPreferences.getString("user_id", "NULL")
-
+    private val imageRepository: ImageRepository by lazy {
         val db = ImageDatabaseProvider.getDatabase(this)
-        val imageDao = db.imageDao()
-
-        lifecycleScope.launch {
-            imageDao.insert(
-                Image(
-                    filePath = file.absolutePath,
-                    description = "",
-                    owner = id?.toIntOrNull() ?: 0
-                )
-            )
-        }
+        ImageRepository(db.imageDao())
     }
-
-    val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val prefsRepository: PreferencesRepository by lazy {
+        PreferencesRepository(applicationContext)
+    }
+    private val viewModel: ImageViewModel by viewModels {
+        ImageViewModelFactory(imageRepository,prefsRepository)
+    }
+    private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
-            saveImageToInternalStorage(it)
+            viewModel.saveImageToInternalStorage(it, contentResolver, filesDir)
         }
     }
 
+    @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
@@ -71,20 +53,37 @@ class FeedActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
 
-        val db = ImageDatabaseProvider.getDatabase(this)
-        val imageDao = db.imageDao()
-
         lifecycleScope.launch {
-            val images = imageDao.getAll()
-            adapter.submitImages(images)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.imagesAll.collect { images ->
+                    adapter.submitImages(images)
+                }
+            }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    @Override
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.setSearchQuery(query ?: "")
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                viewModel.setSearchQuery(newText ?: "")
+                return true
+            }
+        })
         return true
     }
 
+    @Override
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add -> {
