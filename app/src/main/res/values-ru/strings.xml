@@ -17,4 +17,6 @@
     <string name="search">Поиск</string>
     <string name="delete">Удалить</string>
     <string name="loginLabel">"Имя пользователя: "</string>
+    <string name="changeLang">Сменить язык</string>
+    <string name="switchTheme">Сменить тему</string>
 </resources>

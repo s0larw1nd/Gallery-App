@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.TransitionInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -55,6 +56,10 @@ class ImageActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        window.sharedElementEnterTransition = TransitionInflater
+            .from(this)
+            .inflateTransition(android.R.transition.move)
 
         val imageView = findViewById<ImageView>(R.id.imageView)
         val textEdit = findViewById<TextView>(R.id.textEdit)

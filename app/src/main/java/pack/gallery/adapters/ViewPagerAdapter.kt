@@ -19,7 +19,7 @@ class ViewPagerAdapter(
         val image = images[position]
         var desc = image.description
         if (desc.length > 80) desc = desc.substring(0,80) + "..."
-        return PageFragment(image.filePath, desc)
+        return PageFragment.newInstance(image.filePath, desc)
     }
 
     fun submitImages(newPhotos: List<Image>) {

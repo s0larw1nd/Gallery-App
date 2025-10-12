@@ -3,4 +3,5 @@
     android:id="@+id/itemImage"
     android:layout_width="100dp"
     android:layout_height="200dp"
-    android:scaleType="centerCrop" />
+    android:scaleType="centerCrop"
+    android:transitionName="imageTransition" />

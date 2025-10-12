@@ -1,7 +1,10 @@
 package pack.gallery.adapters
 
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,10 +42,17 @@ class ImageAdapter(
 
         holder.imageView.setOnClickListener {
             val context = holder.itemView.context
-            Intent(context, ImageActivity::class.java).also {
-                it.putExtra("id", image.id)
-                ContextCompat.startActivity(context, it, null)
-            }
+            val intent = Intent(context, ImageActivity::class.java)
+
+            intent.putExtra("id", image.id)
+
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                context as Activity,
+                holder.itemView,
+                "imageTransition"
+            )
+
+            context.startActivity(intent, options.toBundle())
         }
     }
 

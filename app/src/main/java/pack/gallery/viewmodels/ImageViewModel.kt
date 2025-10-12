@@ -21,7 +21,7 @@ import java.io.FileOutputStream
 class ImageViewModel(
     private val imageRepository: ImageRepository,
     private val prefsRepository: PreferencesRepository
-) : ViewModel() {
+    ) : ViewModel() {
     private val searchQuery = MutableStateFlow("")
 
     val imagesOwner: StateFlow<List<Image>> = searchQuery
