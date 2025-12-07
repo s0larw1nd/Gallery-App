@@ -49,6 +49,9 @@ class ImageViewModel(
     suspend fun updateDescId(id: Int, description: String) {
         imageRepository.updateDescID(id,description)
     }
+    suspend fun updateFilepathId(id: Int, filepath: String) {
+        imageRepository.updateFilepathID(id,filepath)
+    }
     suspend fun deleteId(id: Int) {
         imageRepository.delete(id)
     }

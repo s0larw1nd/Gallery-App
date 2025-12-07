@@ -39,6 +39,11 @@
         </activity>
 
         <activity
+            android:name=".activities.EditActivity"
+            android:theme="@style/Theme.Gallery">
+        </activity>
+
+        <activity
             android:name=".activities.InfoActivity"
             android:theme="@style/Theme.Gallery">
         </activity>

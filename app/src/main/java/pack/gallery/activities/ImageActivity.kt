@@ -66,6 +66,7 @@ class ImageActivity : AppCompatActivity() {
         val shareBtn = findViewById<Button>(R.id.button)
         val saveBtn = findViewById<Button>(R.id.button2)
         val delBtn = findViewById<Button>(R.id.button3)
+        val editBtn = findViewById<Button>(R.id.button4)
         saveBtn.setEnabled(false)
 
         val imageId = intent.getIntExtra("id", 0)
@@ -123,6 +124,12 @@ class ImageActivity : AppCompatActivity() {
                     )
                 saveBtn.setEnabled(false)
             }
+        }
+
+        editBtn.setOnClickListener {
+            val intent = Intent(this, EditActivity::class.java)
+            intent.putExtra("id", imageId)
+            startActivity(intent)
         }
 
         textEdit.addTextChangedListener(object : TextWatcher {

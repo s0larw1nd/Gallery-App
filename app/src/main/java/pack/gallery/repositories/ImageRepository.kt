@@ -20,6 +20,9 @@ class ImageRepository(private val imageDao: ImageDao) {
     suspend fun updateDescID(id: Int, description: String) {
         return imageDao.updateDesc(id, description)
     }
+    suspend fun updateFilepathID(id: Int, filepath: String) {
+        return imageDao.updateFilepath(id, filepath)
+    }
     suspend fun insert(image: Image) = imageDao.insert(image)
     suspend fun delete(id: Int) = imageDao.delete(id)
 }

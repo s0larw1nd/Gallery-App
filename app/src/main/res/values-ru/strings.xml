@@ -19,4 +19,11 @@
     <string name="loginLabel">"Имя пользователя: "</string>
     <string name="changeLang">Сменить язык</string>
     <string name="switchTheme">Сменить тему</string>
+    <string name="levels">Уровни</string>
+    <string name="cut">Обрезка</string>
+    <string name="effects">Эффекты</string>
+    <string name="close">Закрыть</string>
+    <string name="undo">Назад</string>
+    <string name="forward">Вперёд</string>
+    <string name="edit">Редактировать</string>
 </resources>

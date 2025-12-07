@@ -30,6 +30,9 @@ interface ImageDao {
     @Query("UPDATE image SET description=:description WHERE id = :id")
     suspend fun updateDesc(id: Int, description: String): Unit
 
+    @Query("UPDATE image SET filePath=:filepath WHERE id = :id")
+    suspend fun updateFilepath(id: Int, filepath: String): Unit
+
     @Query("DELETE FROM image WHERE id = :id")
     suspend fun delete(id: Int): Unit
 }

@@ -18,4 +18,11 @@
     <string name="loginLabel">"Login: "</string>
     <string name="changeLang">Change language</string>
     <string name="switchTheme">Switch theme</string>
+    <string name="levels">Levels</string>
+    <string name="cut">Crope</string>
+    <string name="effects">Effects</string>
+    <string name="close">Close</string>
+    <string name="undo">Undo</string>
+    <string name="forward">Redo</string>
+    <string name="edit">Edit</string>
 </resources>
