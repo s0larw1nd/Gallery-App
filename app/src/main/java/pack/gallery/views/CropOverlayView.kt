@@ -22,7 +22,7 @@ class CropOverlayView(context: Context, attrs: AttributeSet? = null)
         isAntiAlias = true
     }
 
-    private val touchMargin = 40f   // чувствительность к краям
+    private val touchMargin = 40f
 
     enum class Mode { NONE, MOVE, RESIZE_LEFT, RESIZE_RIGHT, RESIZE_TOP, RESIZE_BOTTOM, RESIZE_LT, RESIZE_RT, RESIZE_LB, RESIZE_RB }
 
@@ -34,6 +34,23 @@ class CropOverlayView(context: Context, attrs: AttributeSet? = null)
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        val layerId = canvas.saveLayer(0f, 0f, width.toFloat(), height.toFloat(), null)
+
+        val dimPaint = Paint().apply {
+            color = Color.parseColor("#88000000")
+        }
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), dimPaint)
+
+        val clearPaint = Paint().apply {
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        }
+        canvas.drawRect(cropRect, clearPaint)
+
+        clearPaint.xfermode = null
+
+        canvas.restoreToCount(layerId)
+
         canvas.drawRect(cropRect, borderPaint)
     }
 
@@ -70,7 +87,6 @@ class CropOverlayView(context: Context, attrs: AttributeSet? = null)
                     else -> {}
                 }
 
-                // Мини-ограничения
                 fixMinSize()
                 invalidate()
 
